@@ -1,0 +1,2 @@
+# ProtPlot
+ProteinScale v2
