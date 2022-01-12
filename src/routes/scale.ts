@@ -13,6 +13,7 @@ export function parseResidueString(str: string, window: number, scale: ResidueKe
     );
 }
 
+/** Maps string of residues to corresponding scale values*/
 function toScale(str: string, scale: ResidueKey) {
     return (
         str.split('')
@@ -21,17 +22,19 @@ function toScale(str: string, scale: ResidueKey) {
     );
 }
 
-function avg(data: number[], window: number) {
-    return data.map((_, idx, arr) => {
-        const offset = Math.floor(window /2);
-        return arr.slice(Math.max(idx - offset, 0), idx + offset + 1).reduce((a, b)=> a + b);
-    });
+/** Convolution that averages */
+function avg(data: number[], window: number): number[] {
+    const conv = Array(window);
+    for (let i = 0; i < window; i++) {
+        conv[i] = (1/window);
+    }
+    return convolute(data, conv, 0);
 }
 
 type Vec = number[]
 
 // Semantically meaningful only if conv.length % 2 == 1
-function convolute(src: Vec, conv: Vec, fill: number) {
+function convolute(src: Vec, conv: Vec, fill: number): number[] {
     return src.map((_, i, arr) => { return convdot(arr, conv, i, 0)});
 }
 
@@ -49,7 +52,13 @@ function convdot(src: Vec, conv: Vec, pos: number, fill: number): number {
 }
 
 function normalize(src: number[]): number[] {
-    const max = src.reduce((max, curr) => curr > max ? curr : max);
-    const min = src.reduce((min, curr) => curr < min ? curr : min);
-    return src.map(val => (val - min) / (max - min));
+    return src.map(val => (val - min(src)) / (max(src) - min(src)));
+}
+
+export function max<T>(arr: T[]): T {
+    return arr.reduce((max, curr) => curr > max ? curr : max);
+}
+
+export function min<T>(arr: T[]): T {
+    return arr.reduce((min, curr) => curr < min ? curr : min);
 }
