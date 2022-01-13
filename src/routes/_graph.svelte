@@ -2,8 +2,10 @@
     import { Graphic, FuncLine, XAxis, YAxis } from "@snlab/florence";
     import { KDH } from "./scales";
     import { parseResidueString, min, max } from "./scale";
-    const testProt = "MLELLPTAVEGVSQAQITGRPEWIWLALGTALMGLGTLYFLVKGMGVSDPDAKKFYAITTLVPAIAFTMYLSMLLGYGLTMVPFGGEQNPIYWARYADWLFTTPLLLLDLALLVDADQGTILALVGADGIMIGTGLVGALTKVYSYRFVWWAISTAAMLYILYVLFFGFTSKAESMRPEVASTFKVLRNVTVVLWSAYPVVWLIGSEGAGIVPLNIETLLFMVLDVSAKVGFGLILLRSRAIFGEAEAPEPSAGDGAAATSD";
-    const series = parseResidueString(testProt, 5, KDH, false);
+    
+    export let residue;
+    let series;
+    $: series = parseResidueString(residue, 5, KDH, false);
 </script>
 
 <Graphic
@@ -11,7 +13,7 @@
     height={500}
     scaleX={[0, series.length]}
     scaleY={[min(series), max(series)]}
-    padding={20}
+    padding={60}
 >
     <FuncLine func={x => series[Math.floor(x)]} stroke={'blue'} strokeWidth=1 />
     <XAxis />

@@ -8,8 +8,8 @@ function log<T>(obj: T): T {
 
 export function parseResidueString(str: string, window: number, scale: ResidueKey, normlz: boolean): number[] {
     return (
-        normlz ? log(avg(normalize(toScale(str, scale)), window))
-        : log(avg(toScale(str, scale), window))
+        normlz ? avg(normalize(toScale(str, scale)), window)
+        : avg(toScale(str, scale), window)
     );
 }
 
