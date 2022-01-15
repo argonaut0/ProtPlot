@@ -4,8 +4,10 @@
     import { parseResidueString, min, max } from "./scale";
     
     export let residue;
+    export let scale;
+    export let window;
     let series;
-    $: series = parseResidueString(residue, 5, KDH, false);
+    $: series = parseResidueString(residue, window, scale, false);
 </script>
 
 <Graphic
