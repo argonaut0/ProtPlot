@@ -41,8 +41,10 @@
 <Button on:click={()=>{enteredString = testProt; residue = testProt}}>
     <Label>Try a Test Protein</Label>
 </Button>
-<Select bind:value={mapping} label="Select Scale">
-    {#each Mappings as map}
+<Select 
+    key={(map) => map.name}
+    bind:value={mapping} label="Select Scale">
+    {#each Mappings as map (map.name)}
         <Option value={map}>{map.name}</Option>
     {/each}
 </Select>
