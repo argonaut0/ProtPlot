@@ -8,6 +8,7 @@
     const testProt = "MLELLPTAVEGVSQAQITGRPEWIWLALGTALMGLGTLYFLVKGMGVSDPDAKKFYAITTLVPAIAFTMYLSMLLGYGLTMVPFGGEQNPIYWARYADWLFTTPLLLLDLALLVDADQGTILALVGADGIMIGTGLVGALTKVYSYRFVWWAISTAAMLYILYVLFFGFTSKAESMRPEVASTFKVLRNVTVVLWSAYPVVWLIGSEGAGIVPLNIETLLFMVLDVSAKVGFGLILLRSRAIFGEAEAPEPSAGDGAAATSD";
     let residueString = "";
     let windowSize = 3;
+    let accessionNum;
     let mapping = Mappings[0];
 
     function validateWindow() {
@@ -18,6 +19,10 @@
         if (windowSize > residueString.length) {
             windowSize = residueString.length;
         }
+    }
+
+    function validateResidue() {
+        residueString = residueString.toUpperCase();
     }
     
 </script>
@@ -42,10 +47,16 @@
     <link rel="stylesheet" href="/smui.css" />
 </head>
 
-<h1>ProtPlot v0.1</h1>
+<h1>ProtPlot v1.0</h1>
 <Graph residue={residueString} scale={mapping.scale} window={windowSize}/>
 <Button on:click={()=>{residueString = testProt}}>
     <Label>Try a Test Protein</Label>
+</Button>
+<Button on:click={()=>{
+    let req = fetch("https://www.ebi.ac.uk/proteins/api/proteins/P05130");
+    req.then((r)=>r.json()).then((r)=>{residueString = r.sequence.sequence});
+}}>
+    <Label>Get From UniProt</Label>
 </Button>
 <Select 
     key={(map) => map.name}
@@ -63,6 +74,7 @@
     bind:value={residueString}
     label="Enter 1-letter residue sequence"
     input$maxlength={1000000000}
+    on:input={validateResidue}
     >
     <CharacterCounter slot="internalCounter">0 / 1000000000</CharacterCounter>
 </Textfield>

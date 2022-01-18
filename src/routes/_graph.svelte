@@ -14,7 +14,7 @@
     width={1500}
     height={500}
     scaleX={[0, series.length]}
-    scaleY={[min(series), max(series)]}
+    scaleY={[max(series), min(series)]}
     padding={60}
 >
     <FuncLine func={x => series[Math.floor(x)]} stroke={'blue'} strokeWidth=1 />
