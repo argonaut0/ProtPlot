@@ -7,7 +7,7 @@
     export let scale;
     export let window;
     let series;
-    $: series = parseResidueString(residue, window, scale, false);
+    $: series = residue ? parseResidueString(residue, window, scale, false) : [0];
 </script>
 
 <Graphic
