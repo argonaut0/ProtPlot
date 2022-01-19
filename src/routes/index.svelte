@@ -5,11 +5,35 @@
     import Select, { Option } from '@smui/select';
     import CharacterCounter from '@smui/textfield/character-counter';
     import { Mappings } from './scales';
+    import Snackbar from '@smui/snackbar';
     const testProt = "MLELLPTAVEGVSQAQITGRPEWIWLALGTALMGLGTLYFLVKGMGVSDPDAKKFYAITTLVPAIAFTMYLSMLLGYGLTMVPFGGEQNPIYWARYADWLFTTPLLLLDLALLVDADQGTILALVGADGIMIGTGLVGALTKVYSYRFVWWAISTAAMLYILYVLFFGFTSKAESMRPEVASTFKVLRNVTVVLWSAYPVVWLIGSEGAGIVPLNIETLLFMVLDVSAKVGFGLILLRSRAIFGEAEAPEPSAGDGAAATSD";
     let residueString = "";
     let windowSize = 3;
-    let accessionNum;
+    let accessionNum = "";
     let mapping = Mappings[0];
+    let badANum;
+
+
+    let sequenceID = "";
+    let name = "";
+    let name1 = "";
+    let protName = "";
+    let desc = "";
+
+    function updateGraph(r) {
+        if (r === undefined)
+            residueString = r;
+        sequenceID = "";
+        name = "";
+        name1 = "";
+        protName = "";
+        desc = "";
+    }
+
+    function getUpdateCB(r) {
+        return () => { updateGraph(r) };
+    }
+
 
     function validateWindow() {
         if (windowSize < 1) {
@@ -23,6 +47,21 @@
 
     function validateResidue() {
         residueString = residueString.toUpperCase();
+    }
+
+    function getFromAC() {
+        const req = fetch(`https://www.ebi.ac.uk/proteins/api/proteins/${accessionNum}`);
+        req.then((r) => {
+            return r.json();
+        }).then((r) => {
+            residueString = r.sequence.sequence;
+            sequenceID = r.id;
+            name = r.organism.names[0].value;
+            name1 = r.organism.names[1].value;
+            protName = r.protein.recommendedName.fullName.value;
+            desc = r.comments[0].text[0].value;
+
+        }).catch(badANum.open);
     }
     
 </script>
@@ -49,18 +88,19 @@
 
 <h1>ProtPlot v1.0</h1>
 <Graph residue={residueString} scale={mapping.scale} window={windowSize}/>
-<Button on:click={()=>{residueString = testProt}}>
+<Button on:click={() => {residueString = testProt;}}>
     <Label>Try a Test Protein</Label>
 </Button>
-<Button on:click={()=>{
-    let req = fetch("https://www.ebi.ac.uk/proteins/api/proteins/P05130");
-    req.then((r)=>r.json()).then((r)=>{residueString = r.sequence.sequence});
-}}>
+<Button on:click={getFromAC}>
     <Label>Get From UniProt</Label>
 </Button>
+<Textfield bind:value={accessionNum} label="UniProt AC" />
+<Snackbar bind:this={badANum}>
+    <Label>Error getting accession number.</Label>
+</Snackbar>
 <Select 
     key={(map) => map.name}
-    bind:value={mapping} label="Select Scale">
+    bind:value={mapping} label="Select Scale" on:input={updateGraph}>
     {#each Mappings as map (map.name)}
         <Option value={map}>{map.name}</Option>
     {/each}
@@ -78,3 +118,8 @@
     >
     <CharacterCounter slot="internalCounter">0 / 1000000000</CharacterCounter>
 </Textfield>
+<Label>Sequence ID: {sequenceID}</Label>
+<Label>Organism Sci Name: {name}</Label>
+<Label>Organism Common Name: {name1} </Label>
+<Label>Protein Name: {protName}</Label>
+<Label>Description: {desc}</Label>
