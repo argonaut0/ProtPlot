@@ -11,7 +11,7 @@
 </script>
 
 <Graphic
-    width={1500}
+    width={1000}
     height={500}
     scaleX={[0, series.length]}
     scaleY={[max(series), min(series)]}

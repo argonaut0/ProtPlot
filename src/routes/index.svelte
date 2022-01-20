@@ -59,6 +59,11 @@
 
         }).catch(badANum.open);
     }
+
+    function tryTest() {
+        accessionNum = "P05130";
+        getFromAC();
+    }
     
 </script>
 
@@ -82,68 +87,91 @@
     <link rel="stylesheet" href="/smui.css" />
 </head>
 
-<h1>ProtPlot v1.0</h1>
-<LayoutGrid>
-    <Cell span={6}>
+<h1 class="header">ProtPlot v1.0</h1>
+<div class="center">
+    <div class="main">
         <Graph residue={residueString} scale={mapping.scale} window={windowSize}/>
-    </Cell>
-    <Cell span={2}>
-        <Button on:click={() => {updateGraph(testProt);}}>
-            <Label>Try a Test Protein</Label>
-        </Button>
-    </Cell>
-    <Cell span={1}>
-        <Button on:click={getFromAC}>
-            <Label>Get From UniProt</Label>
-        </Button>
-    </Cell>
-    <Cell>
-        <Textfield bind:value={accessionNum} label="UniProt AC" />
-    </Cell>
-    <Cell>
-        <Snackbar bind:this={badANum}>
-            <Label>Error getting accession number.</Label>
-        </Snackbar>
-    </Cell>
-    <Cell>
-        <Select 
-            key={(map) => map.name}
-            bind:value={mapping} label="Select Scale">
-            {#each Mappings as map (map.name)}
-                <Option value={map}>{map.name}</Option>
-            {/each}
-        </Select>
-    </Cell>
-    <Cell>
-        <Textfield bind:value={windowSize} label="Window Size" type="number" on:input={validateWindow} />
-    </Cell>
-    <Cell>
-        <Textfield textarea
-            input$rows={4}
-            input$cols={20}
-            input$resizable={false}
-            variant="outlined"
-            bind:value={residueString}
-            label="Enter 1-letter residue sequence"
-            input$maxlength={1000000000}
-            on:input={validateResidue}
-            >
-            <CharacterCounter slot="internalCounter">0 / 1000000000</CharacterCounter>
-        </Textfield>
-    </Cell>
-    <Cell class={"protinfo"}>
-        <Label>Sequence ID: {sequenceID}</Label>
-        <Label>Organism Sci Name: {name}</Label>
-        <Label>Organism Common Name: {name1} </Label>
-        <Label>Protein Name: {protName}</Label>
-        <Label>Description: {desc}</Label>
-    </Cell>
-</LayoutGrid>
+        <div class="layout">
+            <div class="vertsec">
+                <Select 
+                    key={(map) => map.name}
+                    bind:value={mapping} label="Select Scale">
+                    {#each Mappings as map (map.name)}
+                        <Option value={map}>{map.name}</Option>
+                    {/each}
+                </Select>
+                <Textfield bind:value={windowSize} label="Window Size" type="number" on:input={validateWindow} />
+                <Textfield bind:value={accessionNum} label="UniProt AC" />
+                <Button on:click={getFromAC}>
+                    <Label>Get From UniProt</Label>
+                </Button>
+                <Button on:click={tryTest}>
+                    <Label>Try a Test Protein</Label>
+                </Button>
+                <Snackbar bind:this={badANum}>
+                    <Label>Error getting accession number.</Label>
+                </Snackbar>
+            </div>
+            <Textfield textarea
+                input$rows={12}
+                input$cols={30}
+                input$resizable={false}
+                variant="outlined"
+                bind:value={residueString}
+                label="Enter 1-letter residue sequence"
+                input$maxlength={1000000000}
+                on:input={validateResidue}
+                >
+                <CharacterCounter slot="internalCounter">0 / 1000000000</CharacterCounter>
+            </Textfield>
+            <div class="vertsec">
+                <Textfield class="" textarea disabled variant="outlined" bind:value={sequenceID} label="Sequence ID" input$rows={1}
+                input$cols={30}
+                input$resizable={false}></Textfield>
+                <Textfield textarea disabled variant="outlined" bind:value={name} label="Organism Sci Name" input$rows={1}
+                input$cols={30}
+                input$resizable={false}></Textfield>
+                <Textfield textarea disabled variant="outlined" bind:value={name1} label="Organism Common Name" input$rows={1}
+                input$cols={30}
+                input$resizable={false}></Textfield>
+                <Textfield textarea disabled variant="outlined" bind:value={protName} label="Protein Name"
+                    input$rows={1}
+                    input$cols={30}
+                    input$resizable={false}
+                ></Textfield>
+                <Textfield textarea disabled variant="outlined" bind:value={desc} label="Description"
+                    input$rows={4}
+                    input$cols={30}
+                    input$resizable={false}
+                ></Textfield>
+            </div>
+        </div>
+    </div>
+</div>
 
 <style>
-    .protinfo {
+    .header {
+        font-family: Roboto;
+        width: 100%;
+        text-align: center;
+        background-color: aquamarine;
+    }
+    .center {
         display: flex;
         justify-content: center;
-        align-items: center;
+    }
+    .main {
+        display: flex;
+        flex-direction: column;
+    }
+    .layout {
+        display: flex;
+        justify-content: space-between;
+    }
+    .vertsec {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: left;
     }
 </style>
