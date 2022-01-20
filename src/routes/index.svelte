@@ -6,6 +6,7 @@
     import CharacterCounter from '@smui/textfield/character-counter';
     import { Mappings } from './scales';
     import Snackbar from '@smui/snackbar';
+    import LayoutGrid, { Cell } from '@smui/layout-grid';
     const testProt = "MLELLPTAVEGVSQAQITGRPEWIWLALGTALMGLGTLYFLVKGMGVSDPDAKKFYAITTLVPAIAFTMYLSMLLGYGLTMVPFGGEQNPIYWARYADWLFTTPLLLLDLALLVDADQGTILALVGADGIMIGTGLVGALTKVYSYRFVWWAISTAAMLYILYVLFFGFTSKAESMRPEVASTFKVLRNVTVVLWSAYPVVWLIGSEGAGIVPLNIETLLFMVLDVSAKVGFGLILLRSRAIFGEAEAPEPSAGDGAAATSD";
     let residueString = "";
     let windowSize = 3;
@@ -21,7 +22,7 @@
     let desc = "";
 
     function updateGraph(r) {
-        if (r === undefined)
+        if (r !== undefined)
             residueString = r;
         sequenceID = "";
         name = "";
@@ -29,11 +30,6 @@
         protName = "";
         desc = "";
     }
-
-    function getUpdateCB(r) {
-        return () => { updateGraph(r) };
-    }
-
 
     function validateWindow() {
         if (windowSize < 1) {
@@ -46,7 +42,7 @@
     }
 
     function validateResidue() {
-        residueString = residueString.toUpperCase();
+        updateGraph(residueString.toUpperCase());
     }
 
     function getFromAC() {
@@ -87,39 +83,67 @@
 </head>
 
 <h1>ProtPlot v1.0</h1>
-<Graph residue={residueString} scale={mapping.scale} window={windowSize}/>
-<Button on:click={() => {residueString = testProt;}}>
-    <Label>Try a Test Protein</Label>
-</Button>
-<Button on:click={getFromAC}>
-    <Label>Get From UniProt</Label>
-</Button>
-<Textfield bind:value={accessionNum} label="UniProt AC" />
-<Snackbar bind:this={badANum}>
-    <Label>Error getting accession number.</Label>
-</Snackbar>
-<Select 
-    key={(map) => map.name}
-    bind:value={mapping} label="Select Scale" on:input={updateGraph}>
-    {#each Mappings as map (map.name)}
-        <Option value={map}>{map.name}</Option>
-    {/each}
-</Select>
-<Textfield bind:value={windowSize} label="Window Size" type="number" on:input={validateWindow} />
-<Textfield textarea
-    input$rows={4}
-    input$cols={20}
-    input$resizable={false}
-    variant="outlined"
-    bind:value={residueString}
-    label="Enter 1-letter residue sequence"
-    input$maxlength={1000000000}
-    on:input={validateResidue}
-    >
-    <CharacterCounter slot="internalCounter">0 / 1000000000</CharacterCounter>
-</Textfield>
-<Label>Sequence ID: {sequenceID}</Label>
-<Label>Organism Sci Name: {name}</Label>
-<Label>Organism Common Name: {name1} </Label>
-<Label>Protein Name: {protName}</Label>
-<Label>Description: {desc}</Label>
+<LayoutGrid>
+    <Cell span={6}>
+        <Graph residue={residueString} scale={mapping.scale} window={windowSize}/>
+    </Cell>
+    <Cell span={2}>
+        <Button on:click={() => {updateGraph(testProt);}}>
+            <Label>Try a Test Protein</Label>
+        </Button>
+    </Cell>
+    <Cell span={1}>
+        <Button on:click={getFromAC}>
+            <Label>Get From UniProt</Label>
+        </Button>
+    </Cell>
+    <Cell>
+        <Textfield bind:value={accessionNum} label="UniProt AC" />
+    </Cell>
+    <Cell>
+        <Snackbar bind:this={badANum}>
+            <Label>Error getting accession number.</Label>
+        </Snackbar>
+    </Cell>
+    <Cell>
+        <Select 
+            key={(map) => map.name}
+            bind:value={mapping} label="Select Scale">
+            {#each Mappings as map (map.name)}
+                <Option value={map}>{map.name}</Option>
+            {/each}
+        </Select>
+    </Cell>
+    <Cell>
+        <Textfield bind:value={windowSize} label="Window Size" type="number" on:input={validateWindow} />
+    </Cell>
+    <Cell>
+        <Textfield textarea
+            input$rows={4}
+            input$cols={20}
+            input$resizable={false}
+            variant="outlined"
+            bind:value={residueString}
+            label="Enter 1-letter residue sequence"
+            input$maxlength={1000000000}
+            on:input={validateResidue}
+            >
+            <CharacterCounter slot="internalCounter">0 / 1000000000</CharacterCounter>
+        </Textfield>
+    </Cell>
+    <Cell class={"protinfo"}>
+        <Label>Sequence ID: {sequenceID}</Label>
+        <Label>Organism Sci Name: {name}</Label>
+        <Label>Organism Common Name: {name1} </Label>
+        <Label>Protein Name: {protName}</Label>
+        <Label>Description: {desc}</Label>
+    </Cell>
+</LayoutGrid>
+
+<style>
+    .protinfo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
