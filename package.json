@@ -14,10 +14,6 @@
     "smui-theme-light": "npx smui-theme compile static/smui.css -i src/theme"
   },
   "devDependencies": {
-    "@smui/button": "^6.0.0-beta.13",
-    "@smui/icon-button": "^6.0.0-beta.13",
-    "@smui/layout-grid": "^6.0.0-beta.13",
-    "@smui/snackbar": "^6.0.0-beta.13",
     "@sveltejs/adapter-auto": "next",
     "@sveltejs/kit": "next",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
@@ -44,6 +40,10 @@
     "@snlab/florence": "^0.3.5",
     "@snlab/florence-datacontainer": "^0.2.2",
     "@sveltejs/adapter-static": "^1.0.0-next.26",
+    "@smui/button": "^6.0.0-beta.13",
+    "@smui/icon-button": "^6.0.0-beta.13",
+    "@smui/layout-grid": "^6.0.0-beta.13",
+    "@smui/snackbar": "^6.0.0-beta.13",
     "smui-theme": "^6.0.0-beta.13"
   }
 }

@@ -7,6 +7,7 @@
     import { Mappings } from './scales';
     import Snackbar from '@smui/snackbar';
     import LayoutGrid, { Cell } from '@smui/layout-grid';
+    import '../../static/smui.css';
     const testProt = "MLELLPTAVEGVSQAQITGRPEWIWLALGTALMGLGTLYFLVKGMGVSDPDAKKFYAITTLVPAIAFTMYLSMLLGYGLTMVPFGGEQNPIYWARYADWLFTTPLLLLDLALLVDADQGTILALVGADGIMIGTGLVGALTKVYSYRFVWWAISTAAMLYILYVLFFGFTSKAESMRPEVASTFKVLRNVTVVLWSAYPVVWLIGSEGAGIVPLNIETLLFMVLDVSAKVGFGLILLRSRAIFGEAEAPEPSAGDGAAATSD";
     let residueString = "";
     let windowSize = 3;
@@ -83,8 +84,6 @@
         rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Roboto+Mono"
     />
-    <!-- SMUI Styles -->
-    <link rel="stylesheet" href="/smui.css" />
 </head>
 
 <h1 class="header">ProtPlot v1.0</h1>
