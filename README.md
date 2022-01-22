@@ -1,46 +1,20 @@
 # ProtPlot
 
+A client-side static web tool for generating protein residue plots.
+Accepts directly entering a string, as well as a UniProt Accession number, in which case it will fetch() the required information from the UniProt API.
+
+
+### Comparison to [`ProtScale`](https://web.expasy.org/protscale/)
+- Static site, completely client side. There's no need to wait for the request to get to the server and back. Saves a few seconds and streamlines the experience.
+- The generated graph automatically updates as you change the residue string, window size, amino acid scale, or other options.
+
+
+Live @ [https://argonaut0.github.io/ProtPlot/](https://argonaut0.github.io/ProtPlot/)
+
+![Screenshot](./screen.png)
+
+
 ### Libs
 - https://sveltematerialui.com/
 - https://florence.spatialnetworkslab.org/
 - https://html2canvas.hertzen.com/
-
-
-# create-svelte
-
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte);
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm init svelte@next
-
-# create a new project in my-app
-npm init svelte@next my-app
-```
-
-> Note: the `@next` is temporary
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-Before creating a production version of your app, install an [adapter](https://kit.svelte.dev/docs#adapters) for your target environment. Then:
-
-```bash
-npm run build
-```
-
-> You can preview the built app with `npm run preview`, regardless of whether you installed an adapter. This should _not_ be used to serve your app in production.
